@@ -40,7 +40,7 @@ const client = new MongoClient(uri, {
 
 async function run() {
     try {
-        //await client.connect();
+       
         console.log("Connected to MongoDB");
 
         const userCollection = client.db('Book').collection('user');
@@ -277,9 +277,9 @@ async function run() {
 run().catch(console.dir);
 
 app.get('/', (req, res) => {
-    res.send('server running');
+    res.send('book server running');
 });
 
 app.listen(port, () => {
-    console.log(`server is running on port: ${port}`);
+    console.log(`book server is running on port: ${port}`);
 });
