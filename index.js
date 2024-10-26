@@ -4,7 +4,7 @@ require('dotenv').config();
 const { MongoClient, ServerApiVersion, ObjectId } = require('mongodb');
 const app = express();
 app.use(cors({
-    origin: ["http://localhost:5173"]
+    origin: ["https://b9a11-client-side-protim1451.web.app","https://b9a11-client-side-protim1451.firebaseapp.com","http://localhost:5173"]
     //"https://b9a11-client-side-protim1451.web.app","https://b9a11-client-side-protim1451.firebaseapp.com",
   }));
 // app.use(cors({
@@ -16,7 +16,7 @@ app.use(cors({
 
 // Add this middleware before defining your routes
 app.use((req, res, next) => {
-    res.setHeader('Access-Control-Allow-Origin', 'http://localhost:5173');
+    res.setHeader('Access-Control-Allow-Origin', 'https://b9a11-client-side-protim1451.web.app');
     res.setHeader('Access-Control-Allow-Methods', 'GET, POST, PUT, DELETE');
     res.setHeader('Access-Control-Allow-Headers', 'Content-Type, Authorization');
     next();
