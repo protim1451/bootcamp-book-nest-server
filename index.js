@@ -116,6 +116,36 @@ async function run() {
             res.send(result);
           });
 
+          app.get('/user/admin/:email', async (req, res) => {
+            try {
+              const user = await userCollection.findOne({ email: req.params.email });
+              if (!user) return res.sendStatus(404);
+              res.json({ admin: user.role === 'admin' });
+            } catch (error) {
+              res.status(500).send(error.message);
+            }
+          });
+      
+          app.patch('/user/admin/:id', async (req, res) => {
+            const id = req.params.id;
+            const filter = { _id: new ObjectId(id) };
+            const updatedDoc = {
+              $set: {
+                role: 'admin'
+              }
+            }
+            const result = await userCollection.updateOne(filter, updatedDoc);
+            res.send(result);
+          });
+      
+          app.delete('/user/:id', async (req, res) => {
+            const id = req.params.id;
+            const query = { _id: new ObjectId(id) }
+            const result = await userCollection.deleteOne(query);
+            res.send(result);
+          });
+      
+
         // Book API
         app.post('/book', async (req, res) => {
             const book = req.body;
@@ -206,6 +236,11 @@ async function run() {
         });
 
         // Borrow book endpoint
+        app.get('/borrow', async (req, res) => {
+            const result = await userCollection.find().toArray();
+            res.send(result);
+          });
+
         app.post('/borrow/:id', async (req, res) => {
             const { id } = req.params;
             const { userId, userEmail, userName, returnDate, borrowDate, name, image, category } = req.body;
