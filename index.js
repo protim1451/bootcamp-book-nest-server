@@ -85,21 +85,36 @@ async function run() {
         // }
 
         // User API
+        app.get('/user', async (req, res) => {
+            const result = await userCollection.find().toArray();
+            res.send(result);
+          });
+
+        // app.post('/user', async (req, res) => {
+        //     const user = req.body;
+        //     const result = await userCollection.insertOne(user);
+        //     res.send(result);
+        // });
+
+        // app.get('/user', async (req, res) => {
+        //     try {
+        //         const users = await userCollection.find().toArray();
+        //         res.json(users);
+        //     } catch (error) {
+        //         console.error('Error fetching users:', error);
+        //         res.status(500).json({ error: 'Failed to fetch users' });
+        //     }
+        // });
         app.post('/user', async (req, res) => {
             const user = req.body;
+            const query = { email: user.email };
+            const existingUser = await userCollection.findOne(query);
+            if (existingUser) {
+              return res.send({ message: 'user already exists', insertedId: null });
+            }
             const result = await userCollection.insertOne(user);
             res.send(result);
-        });
-
-        app.get('/user', async (req, res) => {
-            try {
-                const users = await userCollection.find().toArray();
-                res.json(users);
-            } catch (error) {
-                console.error('Error fetching users:', error);
-                res.status(500).json({ error: 'Failed to fetch users' });
-            }
-        });
+          });
 
         // Book API
         app.post('/book', async (req, res) => {
